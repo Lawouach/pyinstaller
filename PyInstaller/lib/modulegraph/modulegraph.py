@@ -18,6 +18,7 @@ import pkg_resources
 import ast
 import codecs
 import imp
+import logging
 import marshal
 import os
 import pkgutil
@@ -34,6 +35,7 @@ from . import zipio
 from ._compat import BytesIO, StringIO, pathname2url, _READ_MODE
 
 
+logger = logging.getLogger(__name__)
 BOM = codecs.BOM_UTF8.decode('utf-8')
 
 
@@ -1411,10 +1413,12 @@ class ModuleGraph(ObjectGraph):
         if m is not None:
             return m
 
+        logger.info(f"#### Trying to open {pathname}")
         if sys.version_info[0] != 2:
             with open(pathname, 'rb') as fp:
                 encoding = util.guess_encoding(fp)
 
+            logger.info(f"#### Using encoding {encoding}")
             with open(pathname, _READ_MODE, encoding=encoding) as fp:
                 contents = fp.read() + '\n'
             if contents.startswith(BOM):
