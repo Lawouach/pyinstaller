@@ -1413,7 +1413,7 @@ class ModuleGraph(ObjectGraph):
         if m is not None:
             return m
 
-        logger.info(f"#### Trying to open {pathname}")
+        logger.info(f"#### Trying to open {pathname}, {os.path.isfile(pathname)}")
         if sys.version_info[0] != 2:
             with open(pathname, 'rb') as fp:
                 encoding = util.guess_encoding(fp)
